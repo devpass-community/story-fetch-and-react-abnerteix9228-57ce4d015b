@@ -8,8 +8,17 @@ function App() {
 
   const handleClick = async (event) => {
     setIsLoading(true)
-    // TODO
-    setIsLoading(false)
+    fetch(`https://meowfacts.herokuapp.com/`)
+    .then(response => response.json())
+    .then(data => {
+      const quote = data.data;
+      setQuote(quote);
+    })
+    .catch(error => {
+      console.error(`Erro na requisição: `, error)
+    });
+  
+    setIsLoading(false)    
   }
 
   return (
@@ -17,8 +26,8 @@ function App() {
       <button data-testid="button" onClick={e => handleClick(e)}>
         <span>get a fact</span>
       </button>
-      {isLoading || quote === '' ? 
-        ( <Spinner /> ) : ( <span data-testid="quote">{quote}</span> )
+      {isLoading || quote === '' ?
+        (<Spinner />) : (<span data-testid="quote">{quote}</span>)
       }
     </Container>
   );
